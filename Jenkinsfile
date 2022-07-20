@@ -22,11 +22,11 @@ pipeline {
             }
         }
         stage('Sonar Scan Start'){
-        steps{
-            withSonarQubeEnv('sonarserver') {
-                    echo "Sonar scan start"
-                     echo "${scannerHome}"
-                     bat "${scannerHome}\\SonarScanner.MSBuild.exe begin /k:\"Pan33r\" /d:sonar.login=\"squ_d23f21a836ee8b5fb7815ebc3cbba256c6d4537c\""
+            steps{
+                withSonarQubeEnv('sonarserver') {
+                        echo "Sonar scan start"
+                        echo "${scannerHome}"
+                        bat "${scannerHome}\\SonarScanner.MSBuild.exe begin /k:\"Pan33r\" /d:sonar.login=\"squ_d23f21a836ee8b5fb7815ebc3cbba256c6d4537c\""
                     }
             }
         }
@@ -76,20 +76,14 @@ pipeline {
                 stage("Publish Docker Image to DockerHub"){
                     steps{
                         echo "Pushing docker image to docker hub"
-                    docker.withRegistry( '', registryCredential ) {
-                    dockerImage.push("$BUILD_NUMBER")
-                    dockerImage.push('latest')   
-                    }                    
+                        docker.withRegistry( '', registryCredential ) {
+                            dockerImage.push("$BUILD_NUMBER")
+                            dockerImage.push('latest')   
+                         }                    
+                    }
                 }
             }    
         } 
-        stage('Docker Deployment'){
-            steps{
-                echo "${registry}:${BUILD_NUMBER}"
-                echo "Docker Deployment by using docker hub's image"
-                bat "docker run -d -p 7200:80 --name c-${containerName}-master ${registry}:${BUILD_NUMBER}"
-            }
-        }
          stage('Docker Deployment'){
             steps{
                 echo "${registry}:${BUILD_NUMBER}"
