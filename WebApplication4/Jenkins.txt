@@ -1,0 +1,45 @@
+﻿pipeline {
+     environment { 
+        registry = "shailu0287/jenkins" 
+        dockerImage = '' 
+    }
+    agent any
+
+    stages {
+        stage('Code Checkout') {
+            steps {
+                  git credentialsId: '8470951f-0aea-45f3-b1bf-8884a1673239', url: 'https://github.com/shailu0287/JenkinsTest.git'
+            }
+        }
+        stage('Nuget Restore') {
+            steps {
+                  bat 'dotnet restore \"WebApplication4.sln\"'
+            }
+        }
+        stage('Build') {
+            steps {
+                  bat "\"${tool 'msbuilddefault'}\" WebApplication4.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+            }
+        }
+        stage('Sonar'){
+            environment {
+                scannerHome = tool 'sonarscanner'
+            }
+            steps{
+                withSonarQubeEnv('sonarserver') {
+                     echo "${scannerHome}"
+                     bat "${scannerHome}\\SonarScanner.MSBuild.exe begin /k:\"Pan33r\" /d:sonar.login=\"squ_d23f21a836ee8b5fb7815ebc3cbba256c6d4537c\""
+                     bat "\"${tool 'msbuilddefault'}\" WebApplication4.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+                     bat "${scannerHome}\\SonarScanner.MSBuild.exe end /d:sonar.login=\"squ_d23f21a836ee8b5fb7815ebc3cbba256c6d4537c\""
+                    }
+            }
+        }
+        stage('Building our image') {
+            steps{
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
+            }
+        }
+    }
+}
