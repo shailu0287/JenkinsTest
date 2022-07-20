@@ -75,11 +75,13 @@ pipeline {
                 }
                 stage("Publish Docker Image to DockerHub"){
                     steps{
-                        echo "Pushing docker image to docker hub"
-                        docker.withRegistry( '', registryCredential ) {
-                            dockerImage.push("$BUILD_NUMBER")
-                            dockerImage.push('latest')   
-                         }                    
+                        script {
+                            echo "Pushing docker image to docker hub"
+                            docker.withRegistry( '', registryCredential ) {
+                                dockerImage.push("$BUILD_NUMBER")
+                                dockerImage.push('latest')   
+                            }   
+                        }                 
                     }
                 }
             }    
