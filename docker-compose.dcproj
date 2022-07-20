@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>bcf6acca-74c1-4b1c-b8d3-95f3e0f44f14</ProjectGuid>
+    <ProjectGuid>4ec5e959-650f-4990-a18b-b7bdc892319d</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>webapplication4</DockerServiceName>
