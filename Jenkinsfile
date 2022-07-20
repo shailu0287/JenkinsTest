@@ -53,15 +53,41 @@ pipeline {
                 }
             }
         }
-        stage('Push docker image') {
-            steps{
-                script {
-                    echo "Pushing docker image to docker hub"
-                    docker.withRegistry( '', registryCredential ) {
-                    dockerImage.push("$BUILD_NUMBER")
-                    dockerImage.push('latest')
+        stage('Containers'){
+            parallel{
+                stage("Run PreContainer Checks"){
+                    environment{
+                        containerID = "${bat(script: 'docker ps -a -q -f name="c-Shailendra-master"', returnStdout: true).trim().readLines().drop(1).join("")}"
+                    }
+                    steps{
+                        script{
+                            echo "Run PreContainer Checks"
+                            echo env.containerName
+                            echo "containerID is "
+                            echo env.containerID
+                            
+                            if(env.containerID != null){
+                                echo "Stop container and remove from stopped container list too"
+                                bat "docker stop ${env.containerID} && docker rm ${env.containerID}"
+                            }                         
+                        }
                     }
                 }
+                stage("Publish Docker Image to DockerHub"){
+                    steps{
+                        echo "Pushing docker image to docker hub"
+                    docker.withRegistry( '', registryCredential ) {
+                    dockerImage.push("$BUILD_NUMBER")
+                    dockerImage.push('latest')   
+                    }                    
+                }
+            }    
+        } 
+        stage('Docker Deployment'){
+            steps{
+                echo "${registry}:${BUILD_NUMBER}"
+                echo "Docker Deployment by using docker hub's image"
+                bat "docker run -d -p 7200:80 --name c-${containerName}-master ${registry}:${BUILD_NUMBER}"
             }
         }
          stage('Docker Deployment'){
