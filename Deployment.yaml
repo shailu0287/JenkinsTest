@@ -1,15 +1,29 @@
-﻿apiVersion: apps/v1
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: nagpapp-service
+  labels: 
+    service: nodeport
+spec:  
+  type: NodePort
+  selector:
+    app: nagpapp
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30157
+---
+
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: shailendra-nagpapp-deployment
-  namespace: kubernetes-cluster-shailendrasharma
   labels:
     app: nagpapp
 spec:
   template:
     metadata:
       name: shailendra-nagpapp-pod-m
-      namespace: kubernetes-cluster-shailendrasharma
       labels:
         app: nagpapp
     spec:
@@ -23,17 +37,3 @@ spec:
   selector:
     matchLabels:
       app: nagpapp
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nagpapp-service
-spec:  
-  type: NodePort
-  selector:
-    app: nagpapp
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort:80
-      nodePort: 30157
