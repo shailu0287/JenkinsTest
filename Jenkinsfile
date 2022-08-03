@@ -92,6 +92,12 @@ pipeline {
                 echo "Docker Deployment by using docker hub's image"
                 bat "docker run -d -p 7200:80 --name c-${containerName}-master ${registry}:${BUILD_NUMBER}"
             }
+            stage('kubernetes Deployment'){
+            steps{
+                
+                echo "kubernetes Deployment by using docker hub's image"
+                bat "kubectl apply -f deployment.yaml"
+            }
         }
     }
 }
