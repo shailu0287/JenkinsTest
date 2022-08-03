@@ -3,7 +3,7 @@ pipeline {
         registry = "shailu0287/jenkins" 
         registryCredential = 'dockerhub_id'
         dockerImage = '' 
-        scannerHome = tool 'sonarscanner'
+        scannerHome = tool 'SonarScanner_Home'
         containerName = "Shailendra"
         PROJECT_ID = 'nagpjenkinsdevops'
         CLUSTER_NAME = 'nagpcluster-1'
@@ -37,7 +37,7 @@ pipeline {
         stage('Build Solution') {
             steps {
                 echo "Build Solution"
-                  bat "\"${tool 'msbuilddefault'}\" WebApplication4.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+                  bat "\"${tool 'MSBUILD_HOME'}\" WebApplication4.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
             }
         }
         stage('Sonar Scan End'){
