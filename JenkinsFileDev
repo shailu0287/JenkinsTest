@@ -3,7 +3,7 @@ pipeline {
         registry = "shailu0287/jenkins" 
         registryCredential = 'dockerhub_id'
         dockerImage = '' 
-        scannerHome = tool 'sonarscanner'
+        scannerHome = tool 'SonarScanner_Home'
         containerName = "Shailendra"
         PROJECT_ID = 'nagpjenkinsdevops'
         CLUSTER_NAME = 'nagpcluster-1'
@@ -15,9 +15,7 @@ pipeline {
     stages {
         stage('Code Checkout') {
             steps {
-                 cleanWs()
-                   echo "Github checkout"
-                  checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://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@github.com/shailu0287/JenkinsTest.git']]])
+                   git branch: 'master', url: 'https://github.com/shailu0287/JenkinsTest.git'
             }
         }
         stage('Nuget Restore') {
@@ -38,7 +36,7 @@ pipeline {
         stage('Build Solution') {
             steps {
                 echo "Build Solution"
-                  bat "\"${tool 'msbuilddefault'}\" WebApplication4.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+                  bat "\"${tool 'MSBUILD_HOME'}\" WebApplication4.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
             }
         }
         stage('Sonar Scan End'){
@@ -99,11 +97,6 @@ pipeline {
             }
 
         }
-        stage('Deploy to GKE') {
-            steps{
-                echo "Deployment started ..."
-                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
-            }
-        }
+       
     }
 }
