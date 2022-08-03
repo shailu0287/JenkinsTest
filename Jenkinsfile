@@ -15,6 +15,7 @@ pipeline {
     stages {
         stage('Code Checkout') {
             steps {
+                 cleanWs()
                    echo "Github checkout"
                   checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://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@github.com/shailu0287/JenkinsTest.git']]])
             }
