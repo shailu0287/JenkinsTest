@@ -5,6 +5,10 @@ pipeline {
         dockerImage = '' 
         scannerHome = tool 'sonarscanner'
         containerName = "Shailendra"
+        PROJECT_ID = 'nagpjenkinsdevops'
+        CLUSTER_NAME = 'nagpcluster-1'
+        LOCATION = 'us-central1-c'
+        CREDENTIALS_ID = 'NAGPJenkinsDevops'
     }
     agent any
 
@@ -94,10 +98,10 @@ pipeline {
             }
 
         }
-        stage('Kubernetes deployement'){
+        stage('Deploy to GKE') {
             steps{
-                echo "kubernetes Deployment by using docker hub's image"
-                bat "kubectl apply -f Deployment.yaml"
+                echo "Deployment started ..."
+                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
             }
         }
     }
