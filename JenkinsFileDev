@@ -29,7 +29,7 @@ pipeline {
                 withSonarQubeEnv('sonarserver') {
                         echo "Sonar scan start"
                         echo "${scannerHome}"
-                        bat "${scannerHome}\\SonarScanner.MSBuild.exe begin /k:\"Pan33r\" /d:sonar.login=\"squ_d23f21a836ee8b5fb7815ebc3cbba256c6d4537c\""
+                        bat "${scannerHome}\\SonarScanner.MSBuild.exe begin /k:\"Pan33r\" /d:sonar.login=\"squ_e2ecec8e21976c04764cc4940d3d3ddbec9e2898\""
                     }
             }
         }
@@ -44,7 +44,7 @@ pipeline {
                 withSonarQubeEnv('sonarserver') {
                      echo "${scannerHome}"
                       echo "sonar scan end"
-                     bat "${scannerHome}\\SonarScanner.MSBuild.exe end /d:sonar.login=\"squ_d23f21a836ee8b5fb7815ebc3cbba256c6d4537c\""
+                     bat "${scannerHome}\\SonarScanner.MSBuild.exe end /d:sonar.login=\"squ_e2ecec8e21976c04764cc4940d3d3ddbec9e2898\""
                     }
             }
         }
