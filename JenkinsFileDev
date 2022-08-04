@@ -42,7 +42,7 @@ pipeline {
         }
        stage('Sonar Scan End'){
             steps{
-                withSonarQubeEnv('sonarserver') {
+                withSonarQubeEnv('SonarQube_Home') {
                      echo "${scannerHome}"
                       echo "sonar scan end"
                      bat "${scannerHome}\\SonarScanner.MSBuild.exe end /d:sonar.login=\"squ_e2ecec8e21976c04764cc4940d3d3ddbec9e2898\""
