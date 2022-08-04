@@ -16,9 +16,13 @@ pipeline {
         skipDefaultCheckout(true)
     }
     stages {
+          stage('cleanup') {
+               steps{
+    cleanWs deleteDirs: true, disableDeferredWipeout: true
+}}
         stage('Code Checkout') {
             steps {
-                   cleanWs()
+                   
                    git branch: 'master', url: 'https://github.com/shailu0287/JenkinsTest.git'
             }
         }
