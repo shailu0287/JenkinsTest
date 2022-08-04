@@ -24,30 +24,14 @@ pipeline {
                   bat 'dotnet restore \"WebApplication4.sln\"'
             }
         }
-        stage('Sonar Scan Start'){
-            steps{
-                withSonarQubeEnv('sonarserver') {
-                        echo "Sonar scan start"
-                        echo "${scannerHome}"
-                        bat "${scannerHome}\\SonarScanner.MSBuild.exe begin /k:\"Pan33r\" /d:sonar.login=\"squ_e2ecec8e21976c04764cc4940d3d3ddbec9e2898\""
-                    }
-            }
-        }
+        
         stage('Build Solution') {
             steps {
                 echo "Build Solution"
                   bat "\"${tool 'MSBUILD_HOME'}\" WebApplication4.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
             }
         }
-        stage('Sonar Scan End'){
-            steps{
-                withSonarQubeEnv('sonarserver') {
-                     echo "${scannerHome}"
-                      echo "sonar scan end"
-                     bat "${scannerHome}\\SonarScanner.MSBuild.exe end /d:sonar.login=\"squ_e2ecec8e21976c04764cc4940d3d3ddbec9e2898\""
-                    }
-            }
-        }
+       
         stage('Building docker image') {
             steps{
                 script {
