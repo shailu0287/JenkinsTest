@@ -15,6 +15,7 @@ pipeline {
     stages {
         stage('Code Checkout') {
             steps {
+                   cleanWS()
                    git branch: 'master', url: 'https://github.com/shailu0287/JenkinsTest.git'
             }
         }
