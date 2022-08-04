@@ -11,14 +11,11 @@ pipeline {
         CREDENTIALS_ID = 'NAGPJenkinsDevops'
     }
     agent any
- options {
-        // This is required if you want to clean before build
-        skipDefaultCheckout(true)
-    }
+ 
     stages {
         stage('Code Checkout') {
             steps {
-                   cleanWs()
+                   
                    git branch: 'master', url: 'https://github.com/shailu0287/JenkinsTest.git'
             }
         }
