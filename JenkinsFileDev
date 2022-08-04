@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Sonar Scan Start'){
             steps{
-                withSonarQubeEnv('sonarserver') {
+                withSonarQubeEnv('SonarQube_Home') {
                         echo "Sonar scan start"
                         echo "${scannerHome}"
                         bat "${scannerHome}\\SonarScanner.MSBuild.exe begin /k:\"Pan33r\" /d:sonar.login=\"squ_e2ecec8e21976c04764cc4940d3d3ddbec9e2898\""
