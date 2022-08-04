@@ -11,11 +11,14 @@ pipeline {
         CREDENTIALS_ID = 'NAGPJenkinsDevops'
     }
     agent any
-
+ options {
+        // This is required if you want to clean before build
+        skipDefaultCheckout(true)
+    }
     stages {
         stage('Code Checkout') {
             steps {
-                   cleanWS()
+                   cleanWs()
                    git branch: 'master', url: 'https://github.com/shailu0287/JenkinsTest.git'
             }
         }
@@ -107,5 +110,16 @@ pipeline {
                 step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
             }
         }
+        post {
+        // Clean after build
+        always {
+            cleanWs(cleanWhenNotBuilt: false,
+                    deleteDirs: true,
+                    disableDeferredWipeout: true,
+                    notFailBuild: true,
+                    patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                               [pattern: '.propsfile', type: 'EXCLUDE']])
+        }
+    }
     }
 }
