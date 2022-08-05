@@ -17,7 +17,7 @@ pipeline {
         stage('Code Checkout') {
             steps {
                    echo 'Cloning project...'
-                checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/shailu0287/JenkinsTest.git']]]
+                checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/development']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/shailu0287/JenkinsTest.git']]]
                 echo 'Project cloned...'
                    
             }
