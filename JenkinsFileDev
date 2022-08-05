@@ -22,11 +22,7 @@ pipeline {
                    
             }
         }
-         stage('Cleaning project') {
-            steps {
-                dotnetClean project: 'WebApplication4.sln'
-            }
-        }
+        
         stage('Nuget Restore') {
             steps {
                   echo "nuget restore"
