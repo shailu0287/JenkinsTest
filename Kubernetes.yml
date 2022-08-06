@@ -5,13 +5,12 @@ metadata:
   labels: 
     service: nodeport
 spec:  
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: nagpapp
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30157
 ---
 
 apiVersion: apps/v1
